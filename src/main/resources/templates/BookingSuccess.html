@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Success - ReelTime</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body { background: #f4f6fb; min-height: 100vh; display: flex; flex-direction: column; }
+        .main-content { margin-top: 40px; flex: 1 0 auto; }
+        .navbar, .footer { background: #1a2235 !important; }
+        .navbar .navbar-brand, .navbar .nav-link, .footer { color: #fff !important; }
+        .app-logo { width: 36px; height: 36px; margin-right: 10px; }
+        .navbar {
+            font-size: 1.2rem;
+            padding: 0.7rem 1.5rem;
+        }
+        .app-title, .navbar-brand {
+            font-size: 1.6rem !important;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+        }
+        .navbar .rounded-circle {
+            width: 44px !important;
+            height: 44px !important;
+        }
+        .dropdown-menu {
+            font-size: 1rem;
+            min-width: 140px;
+        }
+        .dropdown-item, .dropdown-header {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+        .footer { flex-shrink: 0; left: 0; right: 0; bottom: 0; background: #1a2235 !important; color: #fff !important; text-align: center; padding: 16px 0; margin-top: 40px; }
+        .card { border-radius: 18px; box-shadow: 0 4px 24px rgba(26,34,53,0.08); background: #fff; }
+        .success-icon { font-size: 4rem; color: #ff9800; }
+        .qr-code { max-width: 200px; border: 2px solid #dee2e6; border-radius: 8px; }
+        .card-title, .list-group-item { color: #1a2235; }
+        .btn-primary { background: #ff9800; border: none; font-weight: 600; }
+        .btn-primary:hover { background: #e68900; }
+        .btn-outline-primary { color: #ff9800; border-color: #ff9800; }
+        .btn-outline-primary:hover { background: #ff9800; color: #fff; }
+        /* Animated checkmark */
+        #checkmark circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            animation: draw-circle 0.7s ease-out forwards;
+        }
+        #checkmark polyline {
+            stroke-dasharray: 50;
+            stroke-dashoffset: 50;
+            animation: draw-check 0.5s 0.7s ease-out forwards;
+        }
+        @keyframes draw-circle {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes draw-check {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="celebration-canvas" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></canvas>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="/home">
+      <img src="/reeltime_logo.png" alt="ReelTime Logo" class="app-logo">
+      ReelTime
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/movies">Movies</a></li>
+        <li class="nav-item"><a class="nav-link" href="/Bookings">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" href="/BookNow">Book Now</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contectUs">Contact Us</a></li>
+      </ul>
+      <div class="ms-3">
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <img th:src="${user != null && user.profilePictureUrl != null ? user.profilePictureUrl : '/default-profile.png'}" class="rounded-circle profile-pic" alt="Profile" onerror="this.src='/default-profile.png'">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li class="dropdown-header text-center">
+              <strong th:text="${user != null ? user.name : 'Guest'}">User Name</strong>
+            </li>
+            <li><a class="dropdown-item" th:href="@{/profile}">Profile Info</a></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</a></li>
+            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container main-content">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg p-4 mt-5">
+                <div class="text-center mb-4">
+                    <!-- Animated checkmark SVG -->
+                    <div id="success-animation" style="position:relative;display:inline-block;">
+                        <svg id="checkmark" width="90" height="90" viewBox="0 0 90 90">
+                            <circle cx="45" cy="45" r="40" fill="none" stroke="#ff9800" stroke-width="6"/>
+                            <polyline points="28,48 41,62 65,35" fill="none" stroke="#43a047" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div id="fireworks-container" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></div>
+                    </div>
+                    <h2 class="text-success mt-3">Booking Confirmed!</h2>
+                    <p class="text-muted">Thank you for booking your tickets. Your seats have been successfully reserved.</p>
+                </div>
+                
+                <div class="booking-details">
+                    <h4 class="mb-3"><i class="bi bi-info-circle"></i> Booking Details</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-person"></i> <strong>Name:</strong></span>
+                                    <span th:text="${userName}">John Doe</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-envelope"></i> <strong>Email:</strong></span>
+                                    <span th:text="${email}">john@example.com</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-telephone"></i> <strong>Phone:</strong></span>
+                                    <span th:text="${phone}">+91 9876543210</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-film"></i> <strong>Movie:</strong></span>
+                                    <span th:text="${movieName}">MERSAL</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-calendar"></i> <strong>Date:</strong></span>
+                                    <span th:text="${date}">2025-01-15</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-clock"></i> <strong>Time:</strong></span>
+                                    <span th:text="${time}">7:00 PM</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-ticket-perforated"></i> <strong>Seat:</strong></span>
+                                    <span th:text="${seatNumber}">A1</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span><i class="bi bi-currency-rupee"></i> <strong>Price:</strong></span>
+                                    <span th:text="${price}">₹200</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4" th:if="${qrCodeImage}">
+                    <h5><i class="bi bi-qr-code"></i> Your QR Code</h5>
+                    <img th:src="${qrCodeImage}" alt="Booking QR Code" class="qr-code mb-3">
+                    <br>
+                    <button class="btn btn-outline-primary" onclick="downloadQR()">
+                        <i class="bi bi-download"></i> Download QR Code
+                    </button>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="/home" class="btn btn-primary me-2">
+                        <i class="bi bi-house"></i> Back to Home
+                    </a>
+                    <a href="/Bookings" class="btn btn-outline-secondary">
+                        <i class="bi bi-list-ul"></i> View All Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    &copy; 2025 ReelTime. All Rights Reserved.
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Advanced celebration animation: fluttering ribbons + confetti + bounce
+const canvas = document.getElementById('celebration-canvas');
+const ctx = canvas.getContext('2d');
+let W = window.innerWidth, H = window.innerHeight;
+canvas.width = W;
+canvas.height = H;
+
+window.addEventListener('resize', () => {
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+});
+
+const COLORS = [
+  '#ff9800', '#43a047', '#00bcd4', '#e91e63', '#ffd600', '#8e24aa', '#00e676', '#fff176', '#fff', '#f44336'
+];
+
+function randomColor() {
+  return COLORS[Math.floor(Math.random() * COLORS.length)];
+}
+
+class Ribbon {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -20 - Math.random() * 100;
+    this.length = 120 + Math.random() * 100; // increased length
+    this.width = 8 + Math.random() * 8;
+    this.color = randomColor();
+    this.speed = 1.5 + Math.random() * 1.5;
+    this.amp = 18 + Math.random() * 18;
+    this.freq = 0.12 + Math.random() * 0.08;
+    this.phase = Math.random() * Math.PI * 2;
+    this.curlSpeed = 0.02 + Math.random() * 0.02;
+    this.curlOffset = Math.random() * Math.PI * 2;
+    // Removed shinePhase
+  }
+  update() {
+    this.y += this.speed;
+    this.phase += this.curlSpeed;
+    // Removed shinePhase update
+    if (this.y > H + 40) {
+      this.x = Math.random() * W;
+      this.y = -20 - Math.random() * 100;
+      this.length = 120 + Math.random() * 100;
+      this.width = 8 + Math.random() * 8;
+      this.color = randomColor();
+      this.speed = 1.5 + Math.random() * 1.5;
+      this.amp = 18 + Math.random() * 18;
+      this.freq = 0.12 + Math.random() * 0.08;
+      this.phase = Math.random() * Math.PI * 2;
+      this.curlSpeed = 0.02 + Math.random() * 0.02;
+      this.curlOffset = Math.random() * Math.PI * 2;
+      // Removed shinePhase reset
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.lineWidth = this.width;
+    ctx.strokeStyle = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 8;
+    ctx.globalAlpha = 0.85;
+    // Draw main curly ribbon without shine
+    ctx.beginPath();
+    let points = 32;
+    for (let i = 0; i <= points; i++) {
+      let t = i / points;
+      let y = this.y + t * this.length;
+      let x = this.x + Math.sin(this.phase + this.freq * i + this.curlOffset) * this.amp;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+      // Removed shine drawing logic
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
+class Confetti {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -10 - Math.random() * 100;
+    this.size = 8 + Math.random() * 10;
+    this.color = randomColor();
+    this.shape = Math.random() > 0.5 ? 'circle' : 'rect';
+    this.speed = 2 + Math.random() * 2;
+    this.drift = (Math.random() - 0.5) * 2;
+    this.rotation = (Math.random() - 0.5) * 0.3;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.drift;
+    this.rotation += this.rotationSpeed;
+    if (this.y > H + 20) {
+      this.x = Math.random() * W;
+      this.y = -10 - Math.random() * 100;
+      this.size = 8 + Math.random() * 10;
+      this.color = randomColor();
+      this.shape = Math.random() > 0.5 ? 'circle' : 'rect';
+      this.speed = 2 + Math.random() * 2;
+      this.drift = (Math.random() - 0.5) * 2;
+      this.rotation = (Math.random() - 0.5) * 0.3;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = 0.9;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 4;
+    if (this.shape === 'circle') {
+      ctx.beginPath();
+      ctx.arc(0, 0, this.size / 2, 0, 2 * Math.PI);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    } else {
+      ctx.fillStyle = this.color;
+      ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
+// Movie-themed confetti shapes
+class MovieTicket {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -10 - Math.random() * 100;
+    this.size = 36 + Math.random() * 18; // much larger
+    this.color = '#e53935'; // bold red for tickets
+    this.speed = 1.2 + Math.random() * 1.2;
+    this.drift = (Math.random() - 0.5) * 2.2;
+    this.rotation = (Math.random() - 0.5) * 0.2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.drift;
+    this.rotation += this.rotationSpeed;
+    if (this.y > H + 40) {
+      this.x = Math.random() * W;
+      this.y = -10 - Math.random() * 100;
+      this.size = 36 + Math.random() * 18;
+      this.color = '#e53935';
+      this.speed = 1.2 + Math.random() * 1.2;
+      this.drift = (Math.random() - 0.5) * 2.2;
+      this.rotation = (Math.random() - 0.5) * 0.2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = 0.95;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 10;
+    // Draw ticket
+    ctx.fillStyle = this.color;
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(-this.size/2, -this.size/3);
+    ctx.lineTo(this.size/2, -this.size/3);
+    ctx.lineTo(this.size/2, this.size/3);
+    ctx.lineTo(-this.size/2, this.size/3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // Ticket text
+    ctx.fillStyle = '#fff';
+    ctx.font = `${this.size/4}px Arial Black`;
+    ctx.textAlign = 'center';
+    ctx.fillText('🎟', 0, this.size/10);
+    ctx.restore();
+  }
+}
+
+class Popcorn {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -10 - Math.random() * 100;
+    this.size = 28 + Math.random() * 12;
+    this.color = '#ffd600'; // popcorn yellow
+    this.speed = 1.8 + Math.random() * 1.2;
+    this.drift = (Math.random() - 0.5) * 2.2;
+    this.rotation = (Math.random() - 0.5) * 0.2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.drift;
+    this.rotation += this.rotationSpeed;
+    if (this.y > H + 40) {
+      this.x = Math.random() * W;
+      this.y = -10 - Math.random() * 100;
+      this.size = 28 + Math.random() * 12;
+      this.color = '#ffd600';
+      this.speed = 1.8 + Math.random() * 1.2;
+      this.drift = (Math.random() - 0.5) * 2.2;
+      this.rotation = (Math.random() - 0.5) * 0.2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = 0.95;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 8;
+    // Popcorn kernel
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(0, 0, this.size/2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Texture
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(-this.size/4, -this.size/4, this.size/6, 0, 2 * Math.PI);
+    ctx.arc(this.size/4, -this.size/4, this.size/6, 0, 2 * Math.PI);
+    ctx.arc(0, this.size/4, this.size/6, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+class Star {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -10 - Math.random() * 100;
+    this.size = 32 + Math.random() * 12;
+    this.color = '#fff176'; // gold star
+    this.speed = 1.5 + Math.random() * 1.2;
+    this.drift = (Math.random() - 0.5) * 2.2;
+    this.rotation = (Math.random() - 0.5) * 0.2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.drift;
+    this.rotation += this.rotationSpeed;
+    if (this.y > H + 40) {
+      this.x = Math.random() * W;
+      this.y = -10 - Math.random() * 100;
+      this.size = 32 + Math.random() * 12;
+      this.color = '#fff176';
+      this.speed = 1.5 + Math.random() * 1.2;
+      this.drift = (Math.random() - 0.5) * 2.2;
+      this.rotation = (Math.random() - 0.5) * 0.2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = 0.95;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 10;
+    ctx.strokeStyle = '#fbc02d';
+    ctx.lineWidth = 3;
+    // Star
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      let angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
+      let x = Math.cos(angle) * this.size/2;
+      let y = Math.sin(angle) * this.size/2;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+      angle += Math.PI / 5;
+      x = Math.cos(angle) * this.size/4;
+      y = Math.sin(angle) * this.size/4;
+      ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
+class FilmReel {
+  constructor() {
+    this.x = Math.random() * W;
+    this.y = -10 - Math.random() * 100;
+    this.size = 32 + Math.random() * 12;
+    this.color = '#90a4ae'; // gray reel
+    this.speed = 1.3 + Math.random() * 1.2;
+    this.drift = (Math.random() - 0.5) * 2.2;
+    this.rotation = (Math.random() - 0.5) * 0.2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+  }
+  update() {
+    this.y += this.speed;
+    this.x += this.drift;
+    this.rotation += this.rotationSpeed;
+    if (this.y > H + 40) {
+      this.x = Math.random() * W;
+      this.y = -10 - Math.random() * 100;
+      this.size = 32 + Math.random() * 12;
+      this.color = '#90a4ae';
+      this.speed = 1.3 + Math.random() * 1.2;
+      this.drift = (Math.random() - 0.5) * 2.2;
+      this.rotation = (Math.random() - 0.5) * 0.2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+    }
+  }
+  draw(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = 0.95;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 10;
+    // Reel
+    ctx.beginPath();
+    ctx.arc(0, 0, this.size/2, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.strokeStyle = '#263238';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    // Center hole
+    ctx.beginPath();
+    ctx.arc(0, 0, this.size/6, 0, 2 * Math.PI);
+    ctx.fillStyle = '#263238';
+    ctx.fill();
+    // Perforations
+    ctx.fillStyle = '#263238';
+    for (let i = 0; i < 8; i++) {
+      let angle = (i * 2 * Math.PI) / 8;
+      let x = Math.cos(angle) * this.size/3;
+      let y = Math.sin(angle) * this.size/3;
+      ctx.beginPath();
+      ctx.arc(x, y, this.size/12, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+const ribbons = [];
+const confetti = [];
+const movieTickets = [];
+const popcorn = [];
+const stars = [];
+const filmReels = [];
+
+for (let i = 0; i < 20; i++) ribbons.push(new Ribbon());
+for (let i = 0; i < 12; i++) confetti.push(new Confetti()); // keep generic a bit higher
+for (let i = 0; i < 6; i++) movieTickets.push(new MovieTicket());
+for (let i = 0; i < 6; i++) popcorn.push(new Popcorn());
+for (let i = 0; i < 6; i++) stars.push(new Star());
+for (let i = 0; i < 6; i++) filmReels.push(new FilmReel());
+
+function animateCelebration() {
+  ctx.clearRect(0, 0, W, H);
+  
+  // Draw all celebration elements
+  for (const ribbon of ribbons) {
+    ribbon.update();
+    ribbon.draw(ctx);
+  }
+  for (const c of confetti) {
+    c.update();
+    c.draw(ctx);
+  }
+  for (const ticket of movieTickets) {
+    ticket.update();
+    ticket.draw(ctx);
+  }
+  for (const pop of popcorn) {
+    pop.update();
+    pop.draw(ctx);
+  }
+  for (const star of stars) {
+    star.update();
+    star.draw(ctx);
+  }
+  for (const reel of filmReels) {
+    reel.update();
+    reel.draw(ctx);
+  }
+  
+  requestAnimationFrame(animateCelebration);
+}
+animateCelebration();
+</script>
+</body>
+</html>

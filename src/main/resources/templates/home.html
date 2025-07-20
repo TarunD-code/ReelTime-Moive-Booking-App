@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking</title>
+    <link rel="icon" type="image/png" href="/reeltime_logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+        body { background: #f4f6fb; min-height: 100vh; display: flex; flex-direction: column; }
+        .main-content { margin-top: 40px; flex: 1 0 auto; }
+        .navbar, .footer { background: #1a2235 !important; }
+        .navbar .navbar-brand, .navbar .nav-link, .footer { color: #fff !important; }
+        .app-logo { width: 36px; height: 36px; margin-right: 10px; }
+        .navbar {
+            font-size: 1.2rem;
+            padding: 0.7rem 1.5rem;
+        }
+        .app-title, .navbar-brand {
+            font-size: 1.6rem !important;
+        }
+        .navbar-nav .nav-link {
+            font-size: 1rem;
+            padding: 0.5rem 1.2rem;
+        }
+        .navbar .rounded-circle {
+            width: 44px !important;
+            height: 44px !important;
+        }
+        .now-showing-title {
+            color: #22304a;
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 24px;
+        }
+        .welcome-quote {
+            text-align: center;
+            font-size: 3.3rem;
+            color: #22304a;
+            margin-bottom: 16px;
+        }
+        .greeting {
+            text-align: center;
+            font-size: 4.1rem;
+            color: #ff9800;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .book-now-btn {
+            display: block;
+            margin: 0 auto;
+            background: #e74c3c;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 32px;
+            font-size: 1.2rem;
+            transition: background 0.2s;
+        }
+        .book-now-btn:hover {
+            background: #c0392b;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #7f8c8d;
+        }
+        header .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        header nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: normal;
+        }
+        header .search-bar input {
+            padding: 6px;
+            margin-left: 20px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+        }
+        .hero-banner {
+            background-image: url('your-image-url.jpg');
+            height: 400px;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            background-position: center;
+        }
+        .hero-banner h1 {
+            font-size: 50px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .button {
+            padding: 12px 24px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .button:hover {
+            background-color: #c0392b;
+        }
+        .movie-listings {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 40px;
+            background-color: #ecf0f1;
+        }
+        .movie-card { border-radius: 18px; box-shadow: 0 4px 24px rgba(26,34,53,0.08); border: none; background: #fff; transition: box-shadow 0.2s, transform 0.2s; width: 340px; min-width: 320px; max-width: 340px; min-height: 420px; display: flex; flex-direction: column; align-items: center; }
+        .movie-card:hover { box-shadow: 0 12px 36px rgba(26,34,53,0.22); transform: scale(1.04); z-index: 2; }
+        .movie-poster { width: 100%; max-width: 340px; height: 480px; object-fit: cover; border-radius: 18px; background: #fff; display: block; box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin: 0 auto; }
+        .card-title { color: #1a2235; font-weight: 700; }
+        .badge { font-size: 0.95rem; border-radius: 8px; background: #ff9800 !important; color: #fff !important; }
+        .btn-primary { background: #ff9800; border: none; font-weight: 600; }
+        .btn-primary:hover { background: #e68900; }
+        .footer { flex-shrink: 0; left: 0; right: 0; bottom: 0; background: #1a2235 !important; color: #fff !important; text-align: center; padding: 16px 0; margin-top: 40px; }
+        .movie-carousel-section {
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto 40px auto;
+            position: relative;
+            margin-top: 48px;
+            padding: 0 60px;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+        .swiper-button-prev, .swiper-button-next {
+            color: #ff9800;
+            font-size: 6rem;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 30;
+            border-radius: 50%;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.22);
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swiper-button-prev {
+            left: -120px;
+        }
+        .swiper-button-next {
+            right: -120px;
+        }
+        .form-control {
+            font-size: 1.2rem;
+        }
+        .profile-pic {
+            width: 100px !important;
+            height: 100px !important;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .dropdown-menu {
+            font-size: 1rem;
+            min-width: 140px;
+        }
+        .dropdown-item, .dropdown-header {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="/home">
+      <img src="/reeltime_logo.png" alt="ReelTime Logo" class="app-logo">
+      ReelTime
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/movies">Movies</a></li>
+        <li class="nav-item"><a class="nav-link" href="/Bookings">Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" href="/BookNow">Book Now</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contectUs">Contact Us</a></li>
+      </ul>
+      <form class="d-flex ms-3">
+        <input class="form-control" type="search" placeholder="Search movies, theaters..." aria-label="Search">
+      </form>
+      <div class="ms-3">
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <img th:src="${user != null && user.profilePictureUrl != null ? user.profilePictureUrl : '/default-profile.png'}" class="rounded-circle profile-pic" alt="Profile" onerror="this.src='/default-profile.png'">
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+            <li class="dropdown-header text-center">
+              <strong th:text="${user != null ? user.name : 'Guest'}">User Name</strong>
+            </li>
+            <li><a class="dropdown-item" th:href="@{/profile}">Profile Info</a></li>
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</a></li>
+            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container main-content">
+    <!-- Password Change Alerts -->
+    <div th:if="${passwordChangeSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${passwordChangeSuccess}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${passwordChangeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${passwordChangeError}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="greeting" id="greeting"></div>
+    <div class="welcome-quote">Welcome to ReelTime! Experience the best movies, seamless booking, and instant notifications. Enjoy your show!</div>
+    <div class="now-showing-title">Now Showing</div>
+    <button class="book-now-btn" onclick="window.location.href='/BookNow'">BOOK NOW</button>
+    <!-- Movie Carousel Section -->
+    <div class="movie-carousel-section">
+      <div class="swiper movie-swiper">
+        <div class="swiper-wrapper" id="movie-swiper-wrapper"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+</div>
+<footer class="footer text-white text-center py-3">
+    &copy; 2025 ReelTime. All Rights Reserved.
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Dynamic greeting based on time
+    const greetingEl = document.getElementById('greeting');
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting = '';
+    if (hour < 12) greeting = 'Good morning!';
+    else if (hour < 18) greeting = 'Good afternoon!';
+    else greeting = 'Good evening!';
+    greetingEl.textContent = greeting;
+</script>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  // Movie list array
+  const movies = [
+    {
+      title: "MERSAL",
+      img: "/mersal.jpg",
+      desc: "A thrilling action drama with stunning performances.",
+      genre: "Action/Drama"
+    },
+    {
+      title: "NAISEKER",
+      img: "/nai sekar.jpg",
+      desc: "A compelling story of love and sacrifice.",
+      genre: "Romance/Drama"
+    },
+    {
+      title: "LEGEND",
+      img: "/legend.jpg",
+      desc: "An epic adventure that will keep you on the edge.",
+      genre: "Adventure/Fantasy"
+    },
+    {
+      title: "The Shawshank Redemption",
+      img: "/shawshank-redemption.jpg",
+      desc: "Genre: Drama | IMDb: 9.3",
+      genre: "Drama"
+    },
+    {
+      title: "The Godfather",
+      img: "/The Godfather.jpg",
+      desc: "Genre: Crime, Drama | IMDb: 9.2",
+      genre: "Crime/Drama"
+    },
+    {
+      title: "The Dark Knight",
+      img: "/The Dark Knight.jpg",
+      desc: "Genre: Action, Crime, Drama, Thriller | IMDb: 9.0",
+      genre: "Action/Crime/Drama/Thriller"
+    },
+    {
+      title: "Captain America: The First Avenger",
+      img: "/Captain America The First Avenger.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 6.9",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Captain Marvel",
+      img: "/Captain Marvel.jfif",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 6.8",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Iron Man",
+      img: "/Iron Man.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.9",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "The Godfather Part II",
+      img: "/The Godfather Part II.jpg",
+      desc: "Genre: Crime, Drama | IMDb: 9.0",
+      genre: "Crime/Drama"
+    },
+    {
+      title: "12 Angry Men",
+      img: "/12 Angry Men.jpg",
+      desc: "Genre: Crime, Drama | IMDb: 9.0",
+      genre: "Crime/Drama"
+    },
+    {
+      title: "Schindler's List",
+      img: "/Schindler's List.jpg",
+      desc: "Genre: Biography, Drama, History | IMDb: 9.0",
+      genre: "Biography/Drama/History"
+    },
+    {
+      title: "The Lord of the Rings: The Return of the King",
+      img: "/Lord of the Rings.jpg",
+      desc: "Genre: Adventure, Drama, Fantasy | IMDb: 9.0",
+      genre: "Adventure/Drama/Fantasy"
+    },
+    {
+      title: "Pulp Fiction",
+      img: "/Pulp Fiction.jpg",
+      desc: "Genre: Crime, Drama | IMDb: 8.9",
+      genre: "Crime/Drama"
+    },
+    {
+      title: "Inception",
+      img: "/Inception.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 8.8",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Fight Club",
+      img: "/Fight Club.jpg",
+      desc: "Genre: Drama | IMDb: 8.8",
+      genre: "Drama"
+    },
+    {
+      title: "Forrest Gump",
+      img: "/Forrest Gump.jpg",
+      desc: "Genre: Drama, Romance | IMDb: 8.8",
+      genre: "Drama/Romance"
+    },
+    {
+      title: "The Matrix",
+      img: "/The Matrix.jpg",
+      desc: "Genre: Action, Sci-Fi | IMDb: 8.7",
+      genre: "Action/Sci-Fi"
+    },
+    {
+      title: "Guardians of the Galaxy Vol. 3",
+      img: "/Guardians of the Galaxy Vol. 3.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.9",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "The Marvels",
+      img: "/The Marvels.jfif",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 6.0",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Deadpool & Wolverine",
+      img: "/Deadpool & Wolverine.jpeg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 8.0",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Captain America: Brave New World",
+      img: "/Captain America Brave New World.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.2",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Captain America: The Winter Soldier",
+      img: "/Captain America The Winter Soldier.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.7",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Guardians of the Galaxy",
+      img: "/Guardians of the Galaxy.jfif",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 8.0",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Guardians of the Galaxy Vol. 2",
+      img: "/Guardians of the Galaxy Vol. 2.jfif",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.6",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Avengers: Age of Ultron",
+      img: "/Avengers Age of Ultron.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.3",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Ant-Man",
+      img: "/Ant-Man.jfif",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.3",
+      genre: "Action/Adventure/Sci-Fi"
+    },
+    {
+      title: "Captain America: Civil War",
+      img: "/Captain America Civil War.jpg",
+      desc: "Genre: Action, Adventure, Sci-Fi | IMDb: 7.8",
+      genre: "Action/Adventure/Sci-Fi"
+    }
+  ];
+
+  // Render movie cards dynamically
+  const wrapper = document.getElementById('movie-swiper-wrapper');
+  wrapper.innerHTML = movies.map(movie => `
+    <div class="swiper-slide">
+      <div class="card movie-card shadow h-100">
+        <img src="${movie.img}" class="movie-poster" alt="${movie.title} Poster" onerror="this.onerror=null;this.src='/default-movie.png';">
+        <div class="card-body w-100">
+          <h5 class="card-title">${movie.title}</h5>
+          <p class="card-text">${movie.desc}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="badge">${movie.genre}</span>
+            <a href="/BookNow" class="btn btn-primary btn-sm">
+              <i class="bi bi-ticket-perforated"></i> Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  const swiper = new Swiper('.movie-swiper', {
+    slidesPerView: 3,
+    spaceBetween: 32,
+    loop: true,
+    autoplay: {
+      delay: 3500,
+      disableOnInteraction: false,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      0: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    }
+  });
+</script>
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/changePassword" method="POST">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="currentPassword" class="form-label">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+          </div>
+          <div class="mb-3">
+            <label for="newPassword" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Change Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
