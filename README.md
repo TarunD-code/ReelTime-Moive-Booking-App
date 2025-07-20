@@ -126,33 +126,73 @@ spring.datasource.username=your_username
 spring.datasource.password=your_password
 ```
 
-### 3. External Services Configuration
+### 3. Environment Variables Setup
+
+Create a `.env` file in the project root (this file is already in `.gitignore` for security):
+
+```bash
+# Database Configuration
+DB_USER=your_database_username
+DB_PASSWORD=your_database_password
+
+# Email Configuration (Google SMTP)
+TO_EMAIL=your_email@gmail.com
+EMAIL_PASS=your_app_password
+FROM_EMAIL_ID=your_email@gmail.com
+
+# Twilio Configuration
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+WHATSAPP_NUMBER=your_twilio_whatsapp_number
+TWILIO_SMS_NUMBER=your_twilio_sms_number
+TWILIO_WHATSAPP_TEMPLATE=your_whatsapp_template_sid
+```
+
+**Important Security Notes:**
+- Never commit the `.env` file to version control
+- Use app passwords for Gmail (not your regular password)
+- Keep your Twilio credentials secure
+- The `application.properties` file uses environment variables for sensitive data
+
+### 4. External Services Configuration
 
 #### Email Configuration (Google SMTP)
-Update `application.properties`:
-```properties
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your_email@gmail.com
-spring.mail.password=your_app_password
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
-```
+The application is configured to use environment variables for email settings. Make sure your `.env` file contains:
+- `TO_EMAIL`: Your Gmail address
+- `EMAIL_PASS`: Your Gmail app password (not regular password)
+- `FROM_EMAIL_ID`: Your Gmail address for sending emails
 
 #### WhatsApp Configuration (Twilio)
-Update `application.properties`:
-```properties
-twilio.account.sid=your_account_sid
-twilio.auth.token=your_auth_token
-twilio.phone.number=your_twilio_phone_number
-```
+The application uses environment variables for Twilio settings. Ensure your `.env` file contains:
+- `TWILIO_ACCOUNT_SID`: Your Twilio Account SID
+- `TWILIO_AUTH_TOKEN`: Your Twilio Auth Token
+- `WHATSAPP_NUMBER`: Your Twilio WhatsApp number
+- `TWILIO_SMS_NUMBER`: Your Twilio SMS number
+- `TWILIO_WHATSAPP_TEMPLATE`: Your WhatsApp template SID
 
-### 4. Build and Run
+### 5. Build and Run
 ```bash
 # Clean and build the project
 mvn clean package
 
 # Run the application
+mvn spring-boot:run
+```
+
+**Alternative: Using environment variables directly**
+```bash
+# Set environment variables and run
+export DB_USER=your_username
+export DB_PASSWORD=your_password
+export TO_EMAIL=your_email@gmail.com
+export EMAIL_PASS=your_app_password
+export FROM_EMAIL_ID=your_email@gmail.com
+export TWILIO_ACCOUNT_SID=your_account_sid
+export TWILIO_AUTH_TOKEN=your_auth_token
+export WHATSAPP_NUMBER=your_whatsapp_number
+export TWILIO_SMS_NUMBER=your_sms_number
+export TWILIO_WHATSAPP_TEMPLATE=your_template_sid
+
 mvn spring-boot:run
 ```
 
