@@ -201,12 +201,12 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/movies">Movies</a></li>
-        <li class="nav-item"><a class="nav-link" href="/Bookings">Bookings</a></li>
-        <li class="nav-item"><a class="nav-link" href="/BookNow">Book Now</a></li>
-        <li class="nav-item"><a class="nav-link" href="/contectUs">Contact Us</a></li>
+      <ul class="navbar-nav ms-auto" id="spa-nav">
+        <li class="nav-item"><a class="nav-link" href="/home" data-spa>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/movies" data-spa>Movies</a></li>
+        <li class="nav-item"><a class="nav-link" href="/Bookings" data-spa>Bookings</a></li>
+        <li class="nav-item"><a class="nav-link" href="/BookNow" data-spa>Book Now</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contectUs" data-spa>Contact Us</a></li>
       </ul>
       <form class="d-flex ms-3">
         <input class="form-control" type="search" placeholder="Search movies, theaters..." aria-label="Search">
@@ -252,9 +252,7 @@
       </div>
     </div>
 </div>
-<footer class="footer text-white text-center py-3">
-    &copy; 2025 ReelTime. All Rights Reserved.
-</footer>
+<div th:replace="fragments/footer :: appFooter"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Dynamic greeting based on time
@@ -270,6 +268,36 @@
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+  // Lightweight SPA navigation: intercept links with data-spa, fetch content, and replace .main-content
+  document.addEventListener('click', async (e) => {
+    const link = e.target.closest('a[data-spa]');
+    if (!link) return;
+    e.preventDefault();
+    const url = link.getAttribute('href');
+    try {
+      const res = await fetch(url, { headers: { 'X-Requested-With': 'fetch' } });
+      const html = await res.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const newMain = doc.querySelector('.main-content');
+      if (newMain) {
+        document.querySelector('.main-content').innerHTML = newMain.innerHTML;
+        window.history.pushState({}, '', url);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.location.href = url; // fallback
+      }
+    } catch (err) {
+      console.error('SPA navigation error', err);
+      window.location.href = url; // fallback
+    }
+  });
+
+  // handle back/forward navigation
+  window.addEventListener('popstate', () => {
+    window.location.reload();
+  });
+
   // Movie list array
   const movies = [
     {

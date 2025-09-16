@@ -8,19 +8,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
-        body { background: #f4f6fb; }
+        body { background: #f4f6fb; min-height: 100vh; display: flex; flex-direction: column; }
         .app-logo { width: 36px; height: 36px; margin-right: 10px; }
         .navbar, .footer { background: #1a2235 !important; }
         .navbar .navbar-brand, .navbar .nav-link, .footer { color: #fff !important; }
-        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1030; }
-        .main-content { margin-top: 80px; }
+        .main-content { margin-top: 80px; flex: 1 0 auto; }
         .booking-form { border-radius: 18px; box-shadow: 0 4px 24px rgba(26,34,53,0.08); background: #fff; }
         .form-label { color: #1a2235; font-weight: 600; }
         .form-control, .form-select { border-radius: 8px; }
+        .form-control-sm, .form-select-sm { padding-top: .5rem; padding-bottom: .5rem; font-size: .95rem; }
         .btn-warning { background: #ff9800; border: none; font-weight: 600; color: #fff; }
         .btn-warning:hover { background: #e68900; color: #fff; }
         .input-group-text { background: #00bcd4; color: #fff; border: none; font-weight: 600; }
-        .footer { flex-shrink: 0; position: fixed; left: 0; right: 0; bottom: 0; }
+        .poster-card { border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(26,34,53,0.10); background: transparent; }
+        .poster-img { width: 100%; height: auto; object-fit: contain; background: transparent; display: block; }
+        .sticky-side { position: sticky; top: 88px; }
+        /* Zoom-out animation for poster (once) */
+        @keyframes posterZoomOut {
+            0% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        .poster-animate-out {
+            animation: posterZoomOut 1.2s ease-out 1;
+            animation-fill-mode: both;
+            transform-origin: center center;
+            will-change: transform;
+        }
     </style>
 </head>
 <body>
@@ -60,128 +73,117 @@
   </div>
 </nav>
 <div class="container main-content">
-    <div class="booking-form card shadow-lg p-4 mt-5">
-        <h2 class="text-center mb-4"><i class="bi bi-ticket-perforated"></i> Book Your Tickets</h2>
-        <form action="BookingDTLS" id="bookingForm">
-            <div class="form-group mb-3">
-                <label for="movie">Select Movie:</label>
-                <select class="form-control" id="movie" name="movie" required>
-                    <option value="MERSAL">MERSAL</option>
-                    <option value="NAISEKER">NAISEKER</option>
-                    <option value="LEGENT">LEGENT</option>
-                    <option value="The Shawshank Redemption">The Shawshank Redemption</option>
-                    <option value="The Godfather">The Godfather</option>
-                    <option value="The Dark Knight">The Dark Knight</option>
-                    <option value="The Godfather Part II">The Godfather Part II</option>
-                    <option value="12 Angry Men">12 Angry Men</option>
-                    <option value="Schindler's List">Schindler's List</option>
-                    <option value="The Lord of the Rings: The Return of the King">The Lord of the Rings: The Return of the King</option>
-                    <option value="Pulp Fiction">Pulp Fiction</option>
-                    <option value="Inception">Inception</option>
-                    <option value="Fight Club">Fight Club</option>
-                    <option value="Forrest Gump">Forrest Gump</option>
-                    <option value="The Matrix">The Matrix</option>
-                    <option value="Goodfellas">Goodfellas</option>
-                    <option value="Se7en">Se7en</option>
-                    <option value="Interstellar">Interstellar</option>
-                    <option value="Parasite">Parasite</option>
-                    <option value="Spirited Away">Spirited Away</option>
-                    <option value="The Green Mile">The Green Mile</option>
-                    <option value="Léon: The Professional">Léon: The Professional</option>
-                    <option value="The Pianist">The Pianist</option>
-                    <option value="Gladiator">Gladiator</option>
-                    <option value="City of God">City of God</option>
-                    <option value="Life Is Beautiful">Life Is Beautiful</option>
-                    <option value="The Intouchables">The Intouchables</option>
-                    <option value="Captain America: The First Avenger">Captain America: The First Avenger</option>
-                    <option value="Captain Marvel">Captain Marvel</option>
-                    <option value="Iron Man">Iron Man</option>
-                    <option value="Iron Man 2">Iron Man 2</option>
-                    <option value="The Incredible Hulk">The Incredible Hulk</option>
-                    <option value="Thor">Thor</option>
-                    <option value="The Avengers">The Avengers</option>
-                    <option value="Thor: The Dark World">Thor: The Dark World</option>
-                    <option value="Iron Man 3">Iron Man 3</option>
-                    <option value="Captain America: The Winter Soldier">Captain America: The Winter Soldier</option>
-                    <option value="Guardians of the Galaxy">Guardians of the Galaxy</option>
-                    <option value="Guardians of the Galaxy Vol. 2">Guardians of the Galaxy Vol. 2</option>
-                    <option value="Avengers: Age of Ultron">Avengers: Age of Ultron</option>
-                    <option value="Ant-Man">Ant-Man</option>
-                    <option value="Captain America: Civil War">Captain America: Civil War</option>
-                    <option value="Black Widow">Black Widow</option>
-                    <option value="Spider-Man: Homecoming">Spider-Man: Homecoming</option>
-                    <option value="Black Panther">Black Panther</option>
-                    <option value="Doctor Strange">Doctor Strange</option>
-                    <option value="Thor: Ragnarok">Thor: Ragnarok</option>
-                    <option value="Ant-Man and the Wasp">Ant-Man and the Wasp</option>
-                    <option value="Avengers: Infinity War">Avengers: Infinity War</option>
-                    <option value="Avengers: Endgame">Avengers: Endgame</option>
-                    <option value="Spider-Man: Far From Home">Spider-Man: Far From Home</option>
-                    <option value="Shang-Chi and the Legend of the Ten Rings">Shang-Chi and the Legend of the Ten Rings</option>
-                    <option value="Eternals">Eternals</option>
-                    <option value="Spider-Man: No Way Home">Spider-Man: No Way Home</option>
-                    <option value="Doctor Strange in the Multiverse of Madness">Doctor Strange in the Multiverse of Madness</option>
-                    <option value="Thor: Love and Thunder">Thor: Love and Thunder</option>
-                    <option value="Black Panther: Wakanda Forever">Black Panther: Wakanda Forever</option>
-                    <option value="Ant-Man and the Wasp: Quantumania">Ant-Man and the Wasp: Quantumania</option>
-                    <option value="Guardians of the Galaxy Vol. 3">Guardians of the Galaxy Vol. 3</option>
-                    <option value="The Marvels">The Marvels</option>
-                    <option value="Deadpool & Wolverine">Deadpool & Wolverine</option>
-                    <option value="Captain America: Brave New World">Captain America: Brave New World</option>
-                    <option value="Thunderbolts">Thunderbolts</option>
-                </select>
-            </div>
-            <div class="form-group mb-3">
-                <label for="showtime">Select Showtime:</label>
-                <select id="showtime" name="showtime" class="form-select">
-                    <option value="10am">10:00 AM</option>
-                    <option value="1pm">1:00 PM</option>
-                    <option value="4pm">4:00 PM</option>
-                    <option value="7pm">7:00 PM</option>
-                </select>
-            </div>
-            <div class="form-group mb-3">
-                <label for="show-date">Select Show Date:</label>
-                <input type="date" id="show-date" name="show-date" class="form-control" required />
-            </div>
-            <div class="form-group mb-3">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="phone">Phone Number:</label>
-                <div class="input-group">
-                    <span class="input-group-text" style="padding: 0 8px;">+</span>
-                    <input type="text" id="countryCode" name="countryCode" value="91" maxlength="3" pattern="[0-9]{1,3}" required style="width: 60px;">
-                    <input type="tel" id="phone" name="phone" pattern="[0-9]{6,15}" placeholder="Enter phone number" required class="form-control">
+    <div class="booking-form card shadow-lg p-4 mt-3">
+        <h3 class="text-center mb-4"><i class="bi bi-ticket-perforated"></i> Book Your Tickets</h3>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <form action="BookingDTLS" id="bookingForm">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="movie" class="form-label">Select Movie</label>
+                            <select class="form-select form-select-sm" id="movie" name="movie" required>
+                                <option value="MERSAL">MERSAL</option>
+                                <option value="NAISEKER">NAISEKER</option>
+                                <option value="LEGEND">LEGEND</option>
+                                <option value="The Shawshank Redemption">The Shawshank Redemption</option>
+                                <option value="The Godfather">The Godfather</option>
+                                <option value="The Dark Knight">The Dark Knight</option>
+                                <option value="The Matrix">The Matrix</option>
+                                <option value="Guardians of the Galaxy Vol. 3">Guardians of the Galaxy Vol. 3</option>
+                                <option value="The Marvels">The Marvels</option>
+                                <option value="Deadpool & Wolverine">Deadpool & Wolverine</option>
+                                <option value="Captain America Brave New World">Captain America Brave New World</option>
+                                <option value="Thunderbolts">Thunderbolts</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="showtime" class="form-label">Showtime</label>
+                            <select id="showtime" name="showtime" class="form-select form-select-sm">
+                                <option value="10am">10:00 AM</option>
+                                <option value="1pm">1:00 PM</option>
+                                <option value="4pm">4:00 PM</option>
+                                <option value="7pm">7:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="show-date" class="form-label">Show Date</label>
+                            <input type="date" id="show-date" name="show-date" class="form-control form-control-sm" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="location" class="form-label">Location</label>
+                            <select id="location" name="location" class="form-select form-select-sm">
+                                <option value="Chennai">Chennai</option>
+                                <option value="Bengaluru">Bengaluru</option>
+                                <option value="Hyderabad">Hyderabad</option>
+                                <option value="Mumbai">Mumbai</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Kochi">Kochi</option>
+                                <option value="Pune">Pune</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="theater" class="form-label">Theater</label>
+                            <select id="theater" name="theater" class="form-select form-select-sm"></select>
+                            <div class="form-text" id="geoHelp">Allow location access to see distances from your current location.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" id="email" name="email" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text" style="padding: 0 8px;">+</span>
+                                <input type="text" id="countryCode" name="countryCode" value="91" maxlength="3" pattern="[0-9]{1,3}" required style="width: 60px;">
+                                <input type="tel" id="phone" name="phone" pattern="[0-9]{6,15}" placeholder="Enter phone number" required class="form-control form-control-sm">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning w-100"><i class="bi bi-check-circle"></i> Book Tickets</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="alert alert-secondary small mb-0" role="alert">
+                                <strong>Rules & Guidelines</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Arrive at least 15 minutes before showtime for security and seating.</li>
+                                    <li>Carry a valid government ID for age-restricted shows (A/UA certifications).</li>
+                                    <li>Tickets are non-refundable after booking; reschedule subject to availability.</li>
+                                    <li>Outside food or beverages are not permitted inside the auditorium.</li>
+                                    <li>Maintain silence; keep mobile phones on silent/vibrate during the show.</li>
+                                    <li>Occupy only the seats you have selected; seat changes require staff approval.</li>
+                                    <li>Management reserves the right to refuse entry for safety or policy violations.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <div class="spinner-border text-primary d-none" id="loadingSpinner" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="toast align-items-center text-bg-success border-0 d-none" id="successToast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Booking successful!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group mb-3 text-center">
-                <button type="submit" class="btn btn-warning w-100"><i class="bi bi-check-circle"></i> Book Tickets</button>
-            </div>
-        </form>
-        <div class="text-center mt-3">
-            <div class="spinner-border text-primary d-none" id="loadingSpinner" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <div class="toast align-items-center text-bg-success border-0 d-none" id="successToast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Booking successful!
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <div class="col-lg-5">
+                <div class="poster-card sticky-side">
+                    <img id="posterPreview" src="/default-movie.png" alt="Movie Poster" class="poster-img" onerror="this.src='/default-movie.png'">
                 </div>
             </div>
         </div>
     </div>
 </div>
-<footer class="bg-dark text-white text-center py-3 mt-5">
-    &copy; 2025 ReelTime. All Rights Reserved.
-</footer>
+<div th:replace="fragments/footer :: appFooter"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const form = document.getElementById('bookingForm');
@@ -195,6 +197,244 @@
             setTimeout(() => toast.classList.add('d-none'), 3000);
         }, 1500);
     });
+
+    // Poster mapping and live preview
+    const movieToPoster = {
+        // Tamil set
+        'MERSAL': '/mersal.jpg',
+        'NAISEKER': '/nai sekar.jpg',
+        'LEGEND': '/legend.jpg',
+        // Classics
+        '12 Angry Men': '/12 Angry Men.jpg',
+        'The Shawshank Redemption': '/shawshank-redemption.jpg',
+        'The Godfather': '/The Godfather.jpg',
+        'The Godfather Part II': '/The Godfather Part II.jpg',
+        'The Dark Knight': '/The Dark Knight.jpg',
+        'Schindler\'s List': "/Schindler's List.jpg",
+        'Pulp Fiction': '/Pulp Fiction.jpg',
+        'Fight Club': '/Fight Club.jpg',
+        'Forrest Gump': '/Forrest Gump.jpg',
+        'Inception': '/Inception.jpg',
+        'The Matrix': '/The Matrix.jpg',
+        'The Green Mile': '/The Green Mile.jpg',
+        'The Pianist': '/The Pianist.jpg',
+        'Gladiator': '/Gladiator.jpg',
+        'City of God': '/City of God.jpg',
+        'Life Is Beautiful': '/Life Is Beautiful.jpg',
+        'The Intouchables': '/The Intouchables.jpg',
+        'Se7en': '/Se7en.jpg',
+        'Interstellar': '/Interstellar.jpg',
+        'Parasite': '/Parasite.jpg',
+        'Spirited Away': '/Spirited Away.jpg',
+        // LOTR
+        'The Lord of the Rings: The Return of the King': '/Lord of the Rings.jpg',
+        // Guardians/Marvel recent
+        'Guardians of the Galaxy': '/Guardians of the Galaxy.jfif',
+        'Guardians of the Galaxy Vol. 2': '/Guardians of the Galaxy Vol. 2.jfif',
+        'Guardians of the Galaxy Vol. 3': '/Guardians of the Galaxy Vol. 3.jpg',
+        // MCU timeline
+        'Captain America: The First Avenger': '/Captain America The First Avenger.jpg',
+        'Captain Marvel': '/Captain Marvel.jfif',
+        'Iron Man': '/Iron Man.jpg',
+        'Iron Man 2': '/Iron Man 2.jfif',
+        'Iron Man 3': '/Iron Man 3.jfif',
+        'The Incredible Hulk': '/The Incredible Hulk.jfif',
+        'Thor': '/Thor.jfif',
+        'The Avengers': '/The Avengers.jfif',
+        'Thor: The Dark World': '/Thor The Dark World.jpg',
+        'Captain America: The Winter Soldier': '/Captain America The Winter Soldier.jpg',
+        'Captain America: Civil War': '/Captain America Civil War.jpg',
+        'Black Widow': '/Black Widow.jpg',
+        'Spider-Man: Homecoming': '/Spider-Man Homecoming.jpg',
+        'Spider-Man: Far From Home': '/Spider-Man Far From Home.jpg',
+        'Spider-Man: No Way Home': '/Spider-Man No Way Home.jpg',
+        'Black Panther': '/Black Panther.jpg',
+        'Black Panther: Wakanda Forever': '/Black Panther Wakanda Forever.jpeg',
+        'Doctor Strange': '/Doctor Strange.jpg',
+        'Doctor Strange in the Multiverse of Madness': '/Doctor Strange in the Multiverse of Madness.jpg',
+        'Thor: Ragnarok': '/Thor_Ragnarok.jpg',
+        'Thor: Love and Thunder': '/Thor Love and Thunder.jpg',
+        'Ant-Man': '/Ant-Man.jfif',
+        'Ant-Man and the Wasp': '/Ant-Man and the Wasp.jpg',
+        'Ant-Man and the Wasp: Quantumania': '/Ant-Man and the Wasp Quantumania.jpg',
+        'Avengers: Age of Ultron': '/Avengers Age of Ultron.jpg',
+        'Avengers: Infinity War': '/Avengers Infinity War.jpg',
+        'Avengers: Endgame': '/Avengers Endgame.jpg',
+        'Shang-Chi and the Legend of the Ten Rings': '/Shang-Chi and the Legend of the Ten Rings.jpg',
+        // New/Upcoming
+        'The Marvels': '/The Marvels.jfif',
+        'Deadpool & Wolverine': '/Deadpool & Wolverine.jpeg',
+        'Captain America Brave New World': '/Captain America Brave New World.jpg',
+        'Thunderbolts': '/Thunderbolts.jpg'
+    };
+
+    // Populate dropdown with full catalog
+    (function populateMovieDropdown() {
+        const sel = document.getElementById('movie');
+        const titles = Object.keys(movieToPoster).sort((a,b)=>a.localeCompare(b));
+        sel.innerHTML = titles.map(t => `<option value="${t}">${t}</option>`).join('');
+    })();
+
+    const movieSel = document.getElementById('movie');
+    const timeSel = document.getElementById('showtime');
+    const dateInp = document.getElementById('show-date');
+    const citySel = document.getElementById('location');
+    const theaterSel = document.getElementById('theater');
+    const posterImg = document.getElementById('posterPreview');
+
+    function triggerPosterZoomOut() {
+        posterImg.classList.remove('poster-animate-out');
+        void posterImg.offsetWidth; // reflow to restart animation
+        posterImg.classList.add('poster-animate-out');
+    }
+
+    // Theaters catalog with coordinates (sample data)
+    const cityToTheaters = {
+        'Chennai': [
+            { name: 'SPI Sathyam Cinemas', lat: 13.0604, lon: 80.2500 },
+            { name: 'PVR Phoenix Marketcity', lat: 12.9887, lon: 80.2169 },
+            { name: 'AGS Cinemas Navalur', lat: 12.8517, lon: 80.2271 }
+        ],
+        'Bengaluru': [
+            { name: 'PVR Koramangala', lat: 12.9345, lon: 77.6156 },
+            { name: 'INOX Garuda Mall', lat: 12.9717, lon: 77.6086 },
+            { name: 'Cinepolis Royal Meenakshi', lat: 12.8761, lon: 77.5999 }
+        ],
+        'Hyderabad': [
+            { name: 'Prasads Multiplex', lat: 17.4156, lon: 78.4546 },
+            { name: 'AMB Cinemas', lat: 17.4505, lon: 78.3807 }
+        ],
+        'Mumbai': [
+            { name: 'PVR ICON Phoenix Palladium', lat: 19.0047, lon: 72.8259 },
+            { name: 'INOX R City Mall', lat: 19.1730, lon: 72.9455 }
+        ],
+        'Delhi': [
+            { name: 'PVR Select Citywalk', lat: 28.5286, lon: 77.2193 },
+            { name: 'INOX Eros One', lat: 28.5740, lon: 77.2050 }
+        ],
+        'Kochi': [
+            { name: 'PVR Lulu Mall', lat: 10.0284, lon: 76.3083 },
+            { name: 'Cinepolis Center Square', lat: 9.9716, lon: 76.2863 }
+        ],
+        'Pune': [
+            { name: 'PVR Phoenix Marketcity', lat: 18.5610, lon: 73.9181 },
+            { name: 'Cinepolis Seasons Mall', lat: 18.5196, lon: 73.9475 }
+        ]
+    };
+
+    function haversineKm(lat1, lon1, lat2, lon2) {
+        const toRad = d => d * Math.PI / 180;
+        const R = 6371;
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    let userCoords = null;
+    function requestUserLocation() {
+        if (!navigator.geolocation) {
+            document.getElementById('geoHelp').textContent = 'Geolocation is not supported by your browser.';
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(pos => {
+            userCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+            document.getElementById('geoHelp').textContent = 'Distances shown from your current location.';
+            populateTheaters();
+        }, () => {
+            document.getElementById('geoHelp').textContent = 'Location permission denied. Showing theaters without distance.';
+            populateTheaters();
+        }, { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 });
+    }
+
+    async function fetchBBoxForCity(city) {
+        const url = `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&country=India&format=json&limit=1`;
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) return null;
+        const bb = data[0].boundingbox; // [south, north, west, east]
+        return { south: parseFloat(bb[0]), north: parseFloat(bb[1]), west: parseFloat(bb[2]), east: parseFloat(bb[3]) };
+    }
+
+    async function fetchTheatersOSM(bbox) {
+        const q = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:25];(node["amenity"="cinema"](${bbox.south},${bbox.west},${bbox.north},${bbox.east});way["amenity"="cinema"](${bbox.south},${bbox.west},${bbox.north},${bbox.east});relation["amenity"="cinema"](${bbox.south},${bbox.west},${bbox.north},${bbox.east}););out center;`;
+        const res = await fetch(q, { headers: { 'Accept': 'application/json' } });
+        const data = await res.json();
+        if (!data || !Array.isArray(data.elements)) return [];
+        const out = [];
+        for (const el of data.elements) {
+            const name = el.tags && (el.tags.name || el.tags.brand || el.tags.operator);
+            const lat = el.lat || (el.center && el.center.lat);
+            const lon = el.lon || (el.center && el.center.lon);
+            if (name && lat && lon) {
+                out.push({ name, lat, lon });
+            }
+        }
+        // Deduplicate by name
+        const seen = new Set();
+        return out.filter(t => { const k = t.name.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; });
+    }
+
+    async function populateTheaters() {
+        const city = citySel.value;
+        theaterSel.innerHTML = `<option>Loading theaters...</option>`;
+        try {
+            const bbox = await fetchBBoxForCity(city);
+            let theaters = [];
+            if (bbox) {
+                theaters = await fetchTheatersOSM(bbox);
+            }
+            if ((!theaters || theaters.length === 0) && cityToTheaters[city]) {
+                theaters = cityToTheaters[city].map(t => ({ ...t }));
+            }
+            if (userCoords) {
+                theaters.forEach(t => t.km = haversineKm(userCoords.lat, userCoords.lon, t.lat, t.lon));
+                theaters.sort((a,b) => (a.km ?? Number.MAX_VALUE) - (b.km ?? Number.MAX_VALUE) || a.name.localeCompare(b.name));
+            } else {
+                theaters.sort((a,b) => a.name.localeCompare(b.name));
+            }
+            if (!theaters || theaters.length === 0) {
+                theaterSel.innerHTML = `<option>No theaters found. Try another city.</option>`;
+                return;
+            }
+            theaterSel.innerHTML = theaters.map(t => {
+                const label = (userCoords && typeof t.km === 'number') ? `${t.name} — ${t.km.toFixed(1)} km` : t.name;
+                return `<option value="${t.name}">${label}</option>`;
+            }).join('');
+        } catch (e) {
+            // Fallback on error
+            const list = cityToTheaters[city] || [];
+            theaterSel.innerHTML = list
+                .sort((a,b) => a.name.localeCompare(b.name))
+                .map(t => `<option value="${t.name}">${t.name}</option>`).join('');
+        }
+    }
+
+    function updatePoster() {
+        const title = movieSel.value;
+        const src = movieToPoster[title] || '/default-movie.png';
+        posterImg.src = src;
+        // After image swaps, wait for load then update background and play zoom-out once
+        if (posterImg.complete) { triggerPosterZoomOut(); }
+    }
+
+    movieSel.addEventListener('change', updatePoster);
+    timeSel.addEventListener('change', updatePoster);
+    dateInp.addEventListener('change', updatePoster);
+    posterImg.addEventListener('load', () => { triggerPosterZoomOut(); });
+    citySel.addEventListener('change', populateTheaters);
+    // Select first movie by default and render
+    if (!movieSel.value) {
+        const first = Object.keys(movieToPoster)[0];
+        if (first) movieSel.value = first;
+    }
+    updatePoster();
+    // Populate theaters and request location for distances
+    populateTheaters();
+    requestUserLocation();
 </script>
 </body>
 </html>

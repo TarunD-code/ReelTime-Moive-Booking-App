@@ -1,241 +1,88 @@
 # 🎬 ReelTime - Movie Ticket Booking System
 
-A modern, full-stack web application for booking movie tickets with real-time seat selection, user authentication, and notification services.
+## 📝 Project Overview
+ReelTime is a full-stack web application designed for seamless movie ticket booking. It features real-time seat selection, secure user authentication, booking management, and integrated notification services. Built with Java, Spring Boot, and a modern front-end, this project demonstrates best practices in web development, system integration, and user experience design.
 
 ## ✨ Features
-
-### 🎯 Core Features
-- **User Authentication & Registration**
-  - Secure user registration and login
-  - Profile management with profile picture upload
-  - Two-factor authentication (2FA) support
-  - Password reset functionality
-  - Account deactivation
-
-- **Movie Management**
-  - Dynamic movie carousel on home page
-  - Movie details with posters and descriptions
-  - Show timings and availability
-  - Movie categorization by genre
-
-- **Booking System**
-  - Real-time seat selection
-  - Interactive seat map
-  - Booking confirmation with QR code
-  - Booking history and ticket management
-  - Price calculation based on seat count
-
-- **Notifications**
-  - Email notifications for booking confirmations
-  - WhatsApp notifications (Twilio integration)
-  - Customizable notification preferences
-
-### 🎨 User Interface
-- **Modern Responsive Design**
-  - Bootstrap 5 framework
-  - Mobile-friendly interface
-  - Animated elements and transitions
-  - Celebration animations for successful bookings
-  - Consistent branding with ReelTime logo
-
-- **Interactive Elements**
-  - Swiper.js carousel for movies
-  - Dynamic seat selection interface
-  - Real-time form validation
-  - Loading states and feedback
+- 👤 User registration, login, and profile management
+- 🔐 Two-factor authentication (2FA) and password reset
+- 🎥 Dynamic movie listings and detailed movie pages
+- 🪑 Real-time, interactive seat selection and booking
+- 🎟️ Booking confirmation with QR code generation
+- 📖 Booking history and ticket management
+- 📧 Email and WhatsApp notifications (Twilio integration)
+- 📱 Responsive, mobile-friendly UI with Bootstrap 5
 
 ## 📸 Screenshots
-
-### 🏠 Home Page
-![Home Page](screenshots/home-page.png)
-*Dynamic movie carousel with modern UI*
-
-### 🎬 Movie Details
-![Movie Details](screenshots/movie-details.png)
-*Movie information with booking options*
-
-### 🎫 Seat Selection
-![Seat Selection](screenshots/seat-selection.png)
-*Interactive seat map for booking*
-
-### ✅ Booking Success
-![Booking Success](screenshots/booking-success.png)
-*Confirmation page with celebration animation*
-
-### 👤 User Profile
-![User Profile](screenshots/user-profile.png)
-*Profile management with 2FA and preferences*
-
-### 📱 Responsive Design
-![Mobile View](screenshots/mobile-view.png)
-*Mobile-friendly interface*
-
----
+| Screenshot                | Description                       |
+|---------------------------|-----------------------------------|
+| ![Booking confirmed](screenshots/Booking%20confirmed.png) | Booking confirmation page |
+| ![Booking history table view](screenshots/booking%20history%20table%20view.png) | Booking history (table view) |
+| ![Booking history tile view](screenshots/booking%20history%20tile%20view.png) | Booking history (tile view) |
+| ![Contact details](screenshots/contact%20details.png) | User contact details page |
+| ![Dashboard 1](screenshots/Dashboard%201.png) | Dashboard view 1 |
+| ![Dashboard 2](screenshots/Dashboard%202.png) | Dashboard view 2 |
+| ![Movies 1](screenshots/movies%201.png) | Movies listing 1 |
+| ![Movies 2](screenshots/movies%202.png) | Movies listing 2 |
+| ![Movies 3](screenshots/movies%203.png) | Movies listing 3 |
+| ![Movies 4](screenshots/movies%204.png) | Movies listing 4 |
+| ![Movies 5](screenshots/movies%205.png) | Movies listing 5 |
+| ![Movies 6](screenshots/movies%206.png) | Movies listing 6 |
+| ![Movies 7](screenshots/movies%207.png) | Movies listing 7 |
+| ![Password update](screenshots/password%20update.png) | Password update form |
+| ![Profile details](screenshots/profile%20details.png) | User profile details |
+| ![Registration form](screenshots/registration%20form.png) | Registration form |
+| ![Registration successful form](screenshots/registration%20successful%20form.png) | Registration success page |
+| ![Seat Selection](screenshots/Seat%20Selection.png) | Seat selection interface |
+| ![Slot Selection](screenshots/Slot%20Selection.png) | Slot selection interface |
 
 ## 🛠️ Technology Stack
+**Backend:**  Java 21, Spring Boot 3.4.3, Spring Data JPA, Hibernate, MySQL 8.0, Apache Tomcat, Maven
 
-### Backend
-- **Java 21** - Core programming language
-- **Spring Boot 3.4.3** - Application framework
-- **Spring Data JPA** - Database operations
-- **Hibernate** - ORM framework
-- **MySQL 8.0** - Database
-- **Apache Tomcat** - Web server
-- **Maven** - Build tool
+**Frontend:** HTML5, CSS3, JavaScript, Bootstrap 5, Swiper.js, Thymeleaf
 
-### Frontend
-- **HTML5** - Structure
-- **CSS3** - Styling and animations
-- **JavaScript** - Interactivity
-- **Bootstrap 5** - UI framework
-- **Swiper.js** - Carousel functionality
-- **Thymeleaf** - Template engine
+**External Services:** Twilio (WhatsApp), Google SMTP (Email), ZXing (QR code)
 
-### External Services
-- **Twilio** - WhatsApp notifications
-- **Google SMTP** - Email notifications
-- **ZXing** - QR code generation
+## 🚀 Getting Started
+### 📋 Prerequisites
+- Java 21 or higher
+- Maven 3.6 or higher
+- MySQL 8.0 or higher
+- Git
 
-## 📋 Prerequisites
-
-Before running this application, make sure you have:
-
-- **Java 21** or higher
-- **Maven 3.6** or higher
-- **MySQL 8.0** or higher
-- **Git** for version control
-
-## 🚀 Installation & Setup
-
-### 1. Clone the Repository
+### ⚙️ Setup Instructions
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/yourusername/movie-ticket-booking.git
 cd movie-ticket-booking
 ```
-
-### 2. Database Setup
-1. Create a MySQL database:
+2. **Database setup:**
+   - Create a MySQL database:
 ```sql
 CREATE DATABASE movie_booking;
 ```
-
-2. Update database configuration in `src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/movie_booking
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
-
-### 3. Environment Variables Setup
-
-Create a `.env` file in the project root (this file is already in `.gitignore` for security):
-
+   - Update `src/main/resources/application.properties` with your DB credentials.
+3. **Environment variables:**
+   - Create a `.env` file in the project root (see sample in README above).
+   - Never commit sensitive credentials to version control.
+4. **Configure external services:**
+   - Set up Google SMTP for email notifications.
+   - Set up Twilio for WhatsApp notifications.
+5. **Build and run:**
 ```bash
-# Database Configuration
-DB_USER=your_database_username
-DB_PASSWORD=your_database_password
-
-# Email Configuration (Google SMTP)
-TO_EMAIL=your_email@gmail.com
-EMAIL_PASS=your_app_password
-FROM_EMAIL_ID=your_email@gmail.com
-
-# Twilio Configuration
-TWILIO_ACCOUNT_SID=your_twilio_account_sid
-TWILIO_AUTH_TOKEN=your_twilio_auth_token
-WHATSAPP_NUMBER=your_twilio_whatsapp_number
-TWILIO_SMS_NUMBER=your_twilio_sms_number
-TWILIO_WHATSAPP_TEMPLATE=your_whatsapp_template_sid
-```
-
-**Important Security Notes:**
-- Never commit the `.env` file to version control
-- Use app passwords for Gmail (not your regular password)
-- Keep your Twilio credentials secure
-- The `application.properties` file uses environment variables for sensitive data
-
-### 4. External Services Configuration
-
-#### Email Configuration (Google SMTP)
-The application is configured to use environment variables for email settings. Make sure your `.env` file contains:
-- `TO_EMAIL`: Your Gmail address
-- `EMAIL_PASS`: Your Gmail app password (not regular password)
-- `FROM_EMAIL_ID`: Your Gmail address for sending emails
-
-#### WhatsApp Configuration (Twilio)
-The application uses environment variables for Twilio settings. Ensure your `.env` file contains:
-- `TWILIO_ACCOUNT_SID`: Your Twilio Account SID
-- `TWILIO_AUTH_TOKEN`: Your Twilio Auth Token
-- `WHATSAPP_NUMBER`: Your Twilio WhatsApp number
-- `TWILIO_SMS_NUMBER`: Your Twilio SMS number
-- `TWILIO_WHATSAPP_TEMPLATE`: Your WhatsApp template SID
-
-### 5. Build and Run
-```bash
-# Clean and build the project
 mvn clean package
-
-# Run the application
 mvn spring-boot:run
 ```
+   The application will be available at `http://localhost:8080`.
 
-**Alternative: Using environment variables directly**
-```bash
-# Set environment variables and run
-export DB_USER=your_username
-export DB_PASSWORD=your_password
-export TO_EMAIL=your_email@gmail.com
-export EMAIL_PASS=your_app_password
-export FROM_EMAIL_ID=your_email@gmail.com
-export TWILIO_ACCOUNT_SID=your_account_sid
-export TWILIO_AUTH_TOKEN=your_auth_token
-export WHATSAPP_NUMBER=your_whatsapp_number
-export TWILIO_SMS_NUMBER=your_sms_number
-export TWILIO_WHATSAPP_TEMPLATE=your_template_sid
-
-mvn spring-boot:run
-```
-
-The application will be available at: `http://localhost:8080`
-
-## 📱 Usage Guide
-
-### For Users
-
-1. **Registration**
-   - Visit the registration page
-   - Fill in your details (name, email, mobile, username, password)
-   - Submit to create your account
-
-2. **Login**
-   - Use your email and password to log in
-   - Access your personalized dashboard
-
-3. **Browse Movies**
-   - View available movies on the home page
-   - Click on movie posters for detailed information
-   - Check show timings and availability
-
-4. **Book Tickets**
-   - Select a movie, date, and show time
-   - Choose your preferred seats from the interactive seat map
-   - Confirm booking and receive confirmation
-
-5. **Manage Profile**
-   - Update personal information
-   - Upload profile picture
-   - Configure notification preferences
-   - Enable/disable 2FA
-   - View booking history
-
-### For Administrators
-
-- Monitor bookings through the booking history page
-- Manage user accounts and preferences
-- View system audit logs
+## 📖 Usage
+- Register and log in as a user.
+- Browse movies, view details, and select showtimes.
+- Choose seats interactively and confirm your booking.
+- Receive booking confirmation via email and WhatsApp.
+- View and manage your bookings and profile.
 
 ## 🗂️ Project Structure
-
 ```
 Movie_TicketBooking_Final/
 ├── src/
@@ -252,85 +99,32 @@ Movie_TicketBooking_Final/
 │   │       └── application.properties
 │   └── test/                       # Test files
 ├── pom.xml                         # Maven configuration
-├── README.md                       # This file
+├── README.md                       # Project documentation
 └── .gitignore                      # Git ignore rules
 ```
 
-## 🔧 Configuration
+## ⚙️ Configuration & Customization
+- **Database, email, and messaging** settings are managed in `application.properties` and via environment variables.
+- **UI and movie data** can be customized in the HTML templates and static resources.
+- **Notification templates** can be adjusted for email and WhatsApp.
 
-### Application Properties
-Key configuration options in `application.properties`:
+## 🧪 Testing & Troubleshooting
+- The project includes tests for user registration, booking flow, seat selection, notifications, and error handling.
+- Common issues and solutions are documented in the Troubleshooting section above.
 
-- **Database**: Connection settings for MySQL
-- **Email**: SMTP configuration for notifications
-- **WhatsApp**: Twilio settings for messaging
-- **Server**: Port and context path settings
-
-### Customization
-- **Movies**: Add new movies by updating the movie array in `home.html`
-- **Pricing**: Modify ticket prices in the booking controller
-- **UI**: Customize styles in CSS files
-- **Notifications**: Adjust email and WhatsApp templates
-
-## 🧪 Testing
-
-The application includes comprehensive testing for:
-- User registration and authentication
-- Movie booking flow
-- Seat selection functionality
-- Notification delivery
-- Profile management
-- Error handling
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-1. **Database Connection Error**
-   - Verify MySQL is running
-   - Check database credentials in `application.properties`
-   - Ensure database exists
-
-2. **Email Notifications Not Working**
-   - Verify Google app password (not regular password)
-   - Check SMTP settings
-   - Ensure 2FA is enabled on Google account
-
-3. **WhatsApp Notifications Not Working**
-   - Verify Twilio credentials
-   - Check phone number format (E.164)
-   - Ensure WhatsApp Business API is configured
-
-4. **Application Won't Start**
-   - Check Java version (requires Java 21+)
-   - Verify Maven installation
-   - Check port availability (default: 8080)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🌐 Live Demo
+*Coming soon: [Demo Link](#)*
 
 ## 📄 License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 👤 Author
+**Tarun D**  
+GitHub: [Tarun D-code]()  
+Email: tarungjsheela.com
 
-## 👨‍💻 Author
-
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-
-## 🙏 Acknowledgments
-
-- Spring Boot team for the excellent framework
-- Bootstrap team for the responsive UI components
-- Twilio for WhatsApp integration
-- All contributors and testers
+##  Acknowledgments
+- Spring Boot, Bootstrap, Twilio, and all open-source contributors.
 
 ---
-
-**Made with ❤️ for movie lovers everywhere!** 
+*This project was developed as a demonstration of full-stack web application skills, system integration, and user-centric design.* 
