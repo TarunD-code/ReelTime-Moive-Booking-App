@@ -16,10 +16,11 @@ ReelTime is a full-stack web application designed for seamless movie ticket book
 ## 📸 Screenshots
 | Screenshot                | Description                       |
 |---------------------------|-----------------------------------|
-| ![Booking confirmed](screenshots/Booking%20confirmed.png) | Booking confirmation page |
-| ![Booking history table view](screenshots/booking%20history%20table%20view.png) | Booking history (table view) |
-| ![Booking history tile view](screenshots/booking%20history%20tile%20view.png) | Booking history (tile view) |
+| ![Registration form](screenshots/registration%20form.png) | Registration form |
+| ![Registration successful form](screenshots/registration%20successful%20form.png) | Registration success page |
 | ![Contact details](screenshots/contact%20details.png) | User contact details page |
+| ![Profile details](screenshots/profile%20details.png) | User profile details |
+| ![Password update](screenshots/password%20update.png) | Password update form |
 | ![Dashboard 1](screenshots/Dashboard%201.png) | Dashboard view 1 |
 | ![Dashboard 2](screenshots/Dashboard%202.png) | Dashboard view 2 |
 | ![Movies 1](screenshots/movies%201.png) | Movies listing 1 |
@@ -29,12 +30,15 @@ ReelTime is a full-stack web application designed for seamless movie ticket book
 | ![Movies 5](screenshots/movies%205.png) | Movies listing 5 |
 | ![Movies 6](screenshots/movies%206.png) | Movies listing 6 |
 | ![Movies 7](screenshots/movies%207.png) | Movies listing 7 |
-| ![Password update](screenshots/password%20update.png) | Password update form |
-| ![Profile details](screenshots/profile%20details.png) | User profile details |
-| ![Registration form](screenshots/registration%20form.png) | Registration form |
-| ![Registration successful form](screenshots/registration%20successful%20form.png) | Registration success page |
 | ![Seat Selection](screenshots/Seat%20Selection.png) | Seat selection interface |
 | ![Slot Selection](screenshots/Slot%20Selection.png) | Slot selection interface |
+| ![Booking confirmed](screenshots/Booking%20confirmed.png) | Booking confirmation page |
+| ![Booking history table view](screenshots/booking%20history%20table%20view.png) | Booking history (table view) |
+| ![Booking history tile view](screenshots/booking%20history%20tile%20view.png) | Booking history (tile view) |
+| ![Email notification](screenshots/Email%20Notification.png) | Email notification |
+| ![Email notification 2](screenshots/Email%20Notification%202.png) | Email notification 2 |
+| ![Whatsapp notification](screenshots/Whatsapp%20Notofication.png) | Whatsapp notification |
+
 
 ## 🛠️ Technology Stack
 **Backend:**  Java 21, Spring Boot 3.4.3, Spring Data JPA, Hibernate, MySQL 8.0, Apache Tomcat, Maven
@@ -121,7 +125,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 👤 Author
 **Tarun D**  
 GitHub: [Tarun D-code]()  
-Email: tarungjsheela.com
+Email: tarungjsheela@gmail.com
 
 ##  Acknowledgments
 - Spring Boot, Bootstrap, Twilio, and all open-source contributors.
